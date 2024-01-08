@@ -3,6 +3,7 @@ import time
 import json
 import os
 import random
+from art import *
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -81,6 +82,14 @@ def get_group_messages(since_id=None):
                 send_message("I win!")
             elif bot_choice == 'paper' and user_choice == 'scissors':
                 send_message("You win!")
+
+        # ----------- task 3 EC additional feature: text art
+        # will print text art of string if it exists in the library and preceded by 'art: '
+        if last_message["text"][:4] == 'art:':
+            try:
+                send_message(art(last_message["text"][5:]))
+            except:
+                send_message("no art for that ):")
 
         # this shows how to use the .get() method to get specifically the messages but there is more you can do (hint: sample.json)
         return response.json().get("response", {}).get("messages", [])
