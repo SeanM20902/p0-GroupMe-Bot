@@ -30,11 +30,28 @@ def get_group_messages(since_id=None):
     response = requests.get(get_url, params=params)
     if response.status_code == 200:
 
+        # ----------- getting the last msg
+        # doing [-1] to get the last message doesnt actually work; have to get by last created
+        max_created = 0
+        max_idx = 0
+        for i, message in enumerate(response.json().get("response", {}).get("messages", [])):
+            if message['created_at'] > max_created:
+                max_created = message['created_at']
+                max_idx = i
+        last_message = response.json().get("response", {}).get("messages", [])[max_idx]
+
+        # ----------- task 1
         # respond to my 'task 1' messages with 'task 1 response'
-        for message in response.json().get("response", {}).get("messages", []):
-            if message["sender_id"] == '87734062' and \
-                message["text"] == 'task 1':
-                send_message("task 1 response")
+        # my user id is 87734062
+        # only respond to the last message
+        if last_message["sender_id"] == '87734062' and last_message["text"] == 'task 1':
+            send_message("task 1 response")
+
+        # ----------- task 2
+        # bot user id is 883779; dont respond to self
+        if last_message["sender_id"] != '883779':
+            if last_message["text"] == 'good morning': send_message("good morning")
+            elif last_message["text"] == 'good night': send_message("good night")
 
 
         # this shows how to use the .get() method to get specifically the messages but there is more you can do (hint: sample.json)
