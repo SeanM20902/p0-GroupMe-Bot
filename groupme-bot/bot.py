@@ -29,6 +29,14 @@ def get_group_messages(since_id=None):
     get_url = f"https://api.groupme.com/v3/groups/{GROUP_ID}/messages"
     response = requests.get(get_url, params=params)
     if response.status_code == 200:
+
+        # respond to my 'task 1' messages with 'task 1 response'
+        for message in response.json().get("response", {}).get("messages", []):
+            if message["sender_id"] == '87734062' and \
+                message["text"] == 'task 1':
+                send_message("task 1 response")
+
+
         # this shows how to use the .get() method to get specifically the messages but there is more you can do (hint: sample.json)
         return response.json().get("response", {}).get("messages", [])
     return []
@@ -40,8 +48,8 @@ def process_message(message):
     text = message["text"].lower()
 
     # i.e. responding to a specific message (note that this checks if "hello bot" is anywhere in the message, not just the beginning)
-    if "hello bot" in text:
-        send_message("sup")
+    # if "hello bot" in text:
+    #     send_message("sup")
 
     LAST_MESSAGE_ID = message["id"]
 
@@ -58,3 +66,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
