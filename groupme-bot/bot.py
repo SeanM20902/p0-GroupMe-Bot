@@ -2,6 +2,7 @@ import requests
 import time
 import json
 import os
+import random
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -53,6 +54,33 @@ def get_group_messages(since_id=None):
             if last_message["text"] == 'good morning': send_message("good morning")
             elif last_message["text"] == 'good night': send_message("good night")
 
+        # ----------- task 3
+        # rock paper scissors simulator
+        # user plays one of rock, paper, or scissors
+        # bot responds with a random choice from those as well
+        # prints back the winner based on user and bot choices
+        options = ['rock', 'paper', 'scissors']
+        # user goes
+        user_choice = last_message["text"]
+        if last_message["sender_id"] != '883779' and user_choice in options:
+            # bot goes
+            bot_choice = options[random.randint(0,2)]
+            send_message(bot_choice)
+            # who wins
+            if bot_choice == user_choice:
+                send_message("Tie!")
+            elif bot_choice == 'rock' and user_choice == 'scissors':
+                send_message("I win!")
+            elif bot_choice == 'rock' and user_choice == 'paper':
+                send_message("You win!")
+            elif bot_choice == 'scissors' and user_choice == 'rock':
+                send_message("You win!")
+            elif bot_choice == 'scissors' and user_choice == 'paper':
+                send_message("I win!")
+            elif bot_choice == 'paper' and user_choice == 'rock':
+                send_message("I win!")
+            elif bot_choice == 'paper' and user_choice == 'scissors':
+                send_message("You win!")
 
         # this shows how to use the .get() method to get specifically the messages but there is more you can do (hint: sample.json)
         return response.json().get("response", {}).get("messages", [])
