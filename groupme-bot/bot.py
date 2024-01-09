@@ -52,8 +52,10 @@ def get_group_messages(since_id=None):
         # ----------- task 2
         # bot user id is 883779; dont respond to self
         if last_message["sender_id"] != '883779':
-            if last_message["text"] == 'good morning': send_message("good morning")
-            elif last_message["text"] == 'good night': send_message("good night")
+            if last_message["text"] == 'good morning':
+                send_message("good morning, " + last_message["name"])
+            elif last_message["text"] == 'good night':
+                send_message("good night, " + last_message["name"])
 
         # ----------- task 3
         # rock paper scissors simulator
